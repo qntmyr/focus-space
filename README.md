@@ -12,7 +12,7 @@ A calm split-screen workspace for ADHD brains: write on the left, park distracti
 
 ## Deploy
 
-Pushing to `main` runs `.github/workflows/pages.yml`, which builds the site and publishes `dist/` to GitHub Pages. One-time setup: in the repository settings, under Pages, set the source to "GitHub Actions".
+Hosted on Cloudflare Pages, connected to this repository: every push to `main` deploys production, every pull request gets a preview URL. Settings: build command `npm run build`, output directory `dist`. `public/_headers` keeps the service worker fresh and caches hashed assets for a year.
 
 ## Develop
 
