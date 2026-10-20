@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Focus Space</title>
+    <meta name="description" content="A calm split-screen workspace: write, journal, focus timer and ambient sounds. Built for ADHD brains. Works offline, no account." />
+    <meta name="theme-color" content="#0f1115" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo" aria-hidden="true"></span>
+        <span class="name">Focus Space</span>
+      </div>
+
+      <div class="timer" id="timer">
+        <button class="mode" data-mode="focus" aria-pressed="true">Focus</button>
+        <button class="mode" data-mode="short">Short break</button>
+        <button class="mode" data-mode="long">Long break</button>
+        <output class="clock" id="clock" aria-live="off">25:00</output>
+        <button class="primary" id="startPause">Start</button>
+        <button class="ghost" id="reset" title="Reset timer">↺</button>
+        <span class="sessions" id="sessions" title="Focus sessions done today"></span>
+      </div>
+
+      <div class="actions">
+        <button class="ghost" id="toggleJournal" aria-pressed="true" title="Toggle journal pane (J)">Journal</button>
+        <button class="ghost" id="toggleSounds" aria-expanded="false" aria-controls="soundsPanel" title="Ambient sounds (S)">Sounds</button>
+        <button class="ghost" id="toggleTheme" title="Light / dark">◐</button>
+        <button class="ghost" id="focusMode" title="Zen mode: hide everything but the editor (Z)">Zen</button>
+      </div>
+    </header>
+
+    <section class="sounds" id="soundsPanel" hidden>
+      <div class="sound" data-sound="rain"><label>Rain<input type="range" min="0" max="100" value="0" /></label></div>
+      <div class="sound" data-sound="brown"><label>Brown noise<input type="range" min="0" max="100" value="0" /></label></div>
+      <div class="sound" data-sound="wind"><label>Wind<input type="range" min="0" max="100" value="0" /></label></div>
+      <div class="sound" data-sound="cafe"><label>Café murmur<input type="range" min="0" max="100" value="0" /></label></div>
+      <div class="sound" data-sound="fire"><label>Fireplace<input type="range" min="0" max="100" value="0" /></label></div>
+      <div class="sound sound-link">
+        <label>Lo-fi stream (YouTube link)
+          <input type="url" id="lofiUrl" placeholder="https://www.youtube.com/watch?v=…" />
+        </label>
+        <button class="ghost" id="lofiToggle">Play</button>
+      </div>
+      <p class="hint">Sounds are generated in your browser. Nothing is downloaded, nothing is tracked.</p>
+    </section>
+
+    <main class="workspace" id="workspace">
+      <section class="pane" id="writePane">
+        <div class="paneHead">
+          <input class="title" id="docTitle" value="Untitled" aria-label="Document title" />
+          <div class="paneTools">
+            <span class="count" id="wordCount">0 words</span>
+            <select id="font" aria-label="Font">
+              <option value="sans">Sans</option>
+              <option value="serif">Serif</option>
+              <option value="mono">Mono</option>
+            </select>
+            <button class="ghost" id="download" title="Download as .md">↓ .md</button>
+          </div>
+        </div>
+        <textarea id="editor" placeholder="Start writing. One thing at a time." spellcheck="true"></textarea>
+      </section>
+
+      <div class="divider" id="divider" role="separator" aria-orientation="vertical" tabindex="0"></div>
+
+      <aside class="pane" id="journalPane">
+        <div class="paneHead">
+          <span class="title static">Journal</span>
+          <div class="paneTools">
+            <span class="count" id="journalDate"></span>
+            <button class="ghost" id="brainDump" title="Add a quick thought to park (B)">+ Park a thought</button>
+          </div>
+        </div>
+        <textarea id="journal" placeholder="What is on your mind? Park distractions here and come back to them later."></textarea>
+        <div class="intent">
+          <label>Today I will finish
+            <input id="intent" placeholder="one concrete thing" />
+          </label>
+        </div>
+      </aside>
+    </main>
+
+    <div class="lofi" id="lofiFrame" hidden></div>
+
+    <footer class="statusbar">
+      <span id="saveState">Saved locally</span>
+      <span class="shortcuts">Space: start/pause · J: journal · S: sounds · Z: zen · B: park a thought</span>
+    </footer>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
