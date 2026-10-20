@@ -27,21 +27,28 @@
 
 * { box-sizing: border-box; }
 
-html, body {
-  margin: 0;
+html {
   height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
   font-size: 15px;
-}
-
-body {
   display: grid;
-  grid-template-rows: auto auto 1fr auto auto;
-  min-height: 100vh;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
   transition: background 0.3s, color 0.3s;
 }
+
+/* Pin each region to its row so hiding one (sounds, lofi) never shifts the others. */
+.topbar { grid-row: 1; }
+.sounds { grid-row: 2; }
+.workspace { grid-row: 3; }
+.lofi { grid-row: 4; }
+.statusbar { grid-row: 5; }
 
 button, input, select, textarea {
   font: inherit;
@@ -147,7 +154,8 @@ button[aria-pressed="true"], button[aria-expanded="true"] {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px 12px;
   padding: 10px 14px;
   border-bottom: 1px solid var(--line);
 }
@@ -206,7 +214,8 @@ body.flash { animation: flash 0.6s ease 3; }
 @keyframes flash { 50% { background: var(--accent); } }
 
 @media (max-width: 760px) {
-  body { grid-template-rows: auto auto auto auto auto; }
+  html { height: auto; }
+  body { grid-template-rows: auto auto auto auto auto; min-height: 100vh; }
   .workspace { grid-template-columns: 1fr !important; gap: 12px; }
   .pane { min-height: 340px; }
   .divider { display: none; }
