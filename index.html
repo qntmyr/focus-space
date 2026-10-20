@@ -98,10 +98,22 @@
     <main class="workspace" id="workspace">
       <section class="pane" id="writePane">
         <div class="paneHead">
-          <input class="title" id="docTitle" value="Untitled" aria-label="Document title" />
+          <input class="title" id="docTitle" value="Untitled document" aria-label="Document title" />
           <div class="paneTools">
             <span class="count" id="wordCount">0 words</span>
-            <button class="ghost small" id="download" title="Download as Markdown">↓ .md</button>
+            <div class="menu">
+              <button class="ghost small" id="toggleExport" aria-expanded="false" aria-controls="exportPanel" title="Download the document">↓ Export ▾</button>
+              <section class="popover export" id="exportPanel" hidden>
+                <div class="popoverHead">
+                  <strong>Export</strong>
+                  <button class="ghost icon closePopover" aria-label="Close">✕</button>
+                </div>
+                <button class="exportOption" data-format="pdf"><b>PDF</b><span>Opens the print dialog, choose "Save as PDF"</span></button>
+                <button class="exportOption" data-format="docx"><b>Word (.docx)</b><span>Headings, lists, checklists and links kept</span></button>
+                <button class="exportOption" data-format="md"><b>Markdown (.md)</b><span>For Notion, Obsidian, GitHub…</span></button>
+                <button class="exportOption" data-format="txt"><b>Plain text (.txt)</b><span>Just the words</span></button>
+              </section>
+            </div>
           </div>
         </div>
         <div class="toolbar" id="toolbar" role="toolbar" aria-label="Formatting"></div>
@@ -118,7 +130,7 @@
             <button class="ghost small" id="brainDump" title="Add a timestamped line to park a distracting thought (B)">+ Park a distraction</button>
           </div>
         </div>
-        <textarea id="journal" placeholder="Something popped into your head? Park it here with a timestamp and get back to it later. Not on your text, not forgotten either."></textarea>
+        <textarea id="journal" placeholder="Notes, ideas and things to do later. Something pops into your head while you write? Park it here and get back to it after."></textarea>
         <div class="intent">
           <label>Today I will finish
             <input id="intent" placeholder="one concrete thing" />

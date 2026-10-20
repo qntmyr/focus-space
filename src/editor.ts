@@ -73,7 +73,10 @@ export function createEditor(
     content,
     extensions: [
       StarterKit.configure({ heading: { levels: [1, 2, 3] } }),
-      Placeholder.configure({ placeholder: "Start writing. One thing at a time." }),
+      Placeholder.configure({
+        placeholder: ({ node }) =>
+          node.type.name === "heading" ? "Heading" : "Write your document here. Use the toolbar or Markdown shortcuts: # heading, - list, [ ] task, > quote.",
+      }),
       Link.configure({ openOnClick: false, autolink: true, defaultProtocol: "https" }),
       Underline,
       TaskList,

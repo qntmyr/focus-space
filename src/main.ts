@@ -1,7 +1,8 @@
 import { load, save, LOFI_GIRL, type State } from "./store";
 import { Pomodoro, DURATIONS, format, type Mode } from "./timer";
 import { Soundscape } from "./sounds";
-import { createEditor, toMarkdown } from "./editor";
+import { createEditor } from "./editor";
+import { exportDocument, type Format } from "./export";
 
 const $ = <T extends HTMLElement>(sel: string): T => {
   const el = document.querySelector<T>(sel);
@@ -145,8 +146,11 @@ journal.addEventListener("input", () => {
   state.journal = journal.value;
   persist();
 });
+const proseMirror = $<HTMLElement>("#editor .ProseMirror");
+proseMirror.dataset.printTitle = state.title;
 docTitle.addEventListener("input", () => {
   state.title = docTitle.value;
+  proseMirror.dataset.printTitle = state.title;
   persist();
 });
 intent.addEventListener("input", () => {
@@ -159,14 +163,20 @@ font.addEventListener("change", () => {
   persist();
 });
 
-$("#download").addEventListener("click", () => {
-  const blob = new Blob([`# ${state.title}\n\n${toMarkdown(state.doc)}\n`], { type: "text/markdown" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = `${state.title.replace(/[^\w\-]+/g, "-").toLowerCase() || "untitled"}.md`;
-  a.click();
-  URL.revokeObjectURL(a.href);
-});
+document.querySelectorAll<HTMLButtonElement>(".exportOption").forEach((b) =>
+  b.addEventListener("click", async () => {
+    closeMenus();
+    b.disabled = true;
+    try {
+      await exportDocument(editor, state.title, b.dataset.format as Format);
+    } catch (err) {
+      console.error(err);
+      saveState.textContent = "Export failed";
+    } finally {
+      b.disabled = false;
+    }
+  }),
+);
 
 function parkThought(): void {
   state.journalVisible = true;

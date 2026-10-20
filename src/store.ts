@@ -20,7 +20,7 @@ export interface State {
 export const LOFI_GIRL = "https://www.youtube.com/watch?v=jfKfPfyJRdk";
 
 export const defaults: State = {
-  title: "Untitled",
+  title: "Untitled document",
   doc: "",
   journal: "",
   intent: "",
