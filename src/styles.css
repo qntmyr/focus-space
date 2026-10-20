@@ -55,6 +55,7 @@ button {
   border-radius: 999px;
   cursor: pointer;
   line-height: 1;
+  white-space: nowrap;
 }
 button:hover { border-color: var(--muted); }
 button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
@@ -205,7 +206,9 @@ body.flash { animation: flash 0.6s ease 3; }
 @keyframes flash { 50% { background: var(--accent); } }
 
 @media (max-width: 760px) {
-  .workspace { grid-template-columns: 1fr !important; grid-auto-rows: minmax(280px, auto); }
+  body { grid-template-rows: auto auto auto auto auto; }
+  .workspace { grid-template-columns: 1fr !important; gap: 12px; }
+  .pane { min-height: 340px; }
   .divider { display: none; }
   .clock { font-size: 22px; min-width: 70px; }
   .statusbar .shortcuts { display: none; }
