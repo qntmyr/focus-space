@@ -2,7 +2,7 @@
   "name": "Focus Space",
   "short_name": "Focus",
   "description": "A calm split-screen workspace for ADHD brains: write, journal, focus timer and ambient sounds.",
-  "start_url": "./",
+  "start_url": "./app/",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0f1115",

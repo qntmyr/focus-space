@@ -1,3 +1,4 @@
+import "./analytics";
 import { load, save, LOFI_GIRL, type State } from "./store";
 import { Pomodoro, DURATIONS, format, type Mode } from "./timer";
 import { Soundscape } from "./sounds";
@@ -354,5 +355,5 @@ applyLayout();
 syncModeButtons();
 
 if ("serviceWorker" in navigator && location.protocol !== "file:") {
-  window.addEventListener("load", () => void navigator.serviceWorker.register("./sw.js"));
+  window.addEventListener("load", () => void navigator.serviceWorker.register(new URL("../sw.js", import.meta.url).pathname));
 }

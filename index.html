@@ -2,155 +2,140 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Focus Space</title>
-    <meta name="description" content="A calm split-screen workspace: write, journal, focus timer and ambient sounds. Built for ADHD brains. Works offline, no account." />
-    <meta name="theme-color" content="#0f1115" />
-    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Focus Space · A calm writing space for ADHD brains</title>
+    <meta name="description" content="Write on the left, park distractions on the right. Focus timer, ambient sounds, works offline, no account. Free." />
+    <link rel="canonical" href="https://focus.mayerquentin.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Focus Space · A calm writing space for ADHD brains" />
+    <meta property="og:description" content="Write on the left, park distractions on the right. Focus timer, ambient sounds, works offline, no account. Free." />
+    <meta property="og:image" content="https://focus.mayerquentin.com/og.png" />
+    <meta property="og:url" content="https://focus.mayerquentin.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#f6f5f1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)" />
     <link rel="icon" href="./icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./icon-192.png" />
-    <link rel="stylesheet" href="./src/styles.css" />
+    <link rel="stylesheet" href="./src/landing.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Focus Space",
+        "applicationCategory": "ProductivityApplication",
+        "operatingSystem": "Web",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "description": "A calm split-screen workspace for ADHD brains: write, park distractions, focus timer and ambient sounds. Works offline, no account."
+      }
+    </script>
   </head>
   <body>
-    <header class="topbar">
-      <div class="brand">
-        <span class="logo" aria-hidden="true"></span>
-        <span class="name">Focus Space</span>
-      </div>
-
-      <div class="timer" id="timer">
-        <div class="modes" role="group" aria-label="Timer mode">
-          <button class="mode" data-mode="focus" aria-pressed="true">Focus</button>
-          <button class="mode" data-mode="short">Short</button>
-          <button class="mode" data-mode="long">Long</button>
-        </div>
-        <output class="clock" id="clock" aria-live="off">25:00</output>
-        <button class="primary" id="startPause">Start</button>
-        <button class="ghost icon" id="reset" title="Reset timer" aria-label="Reset timer">↺</button>
-        <span class="sessions" id="sessions" title="Focus sessions done today"></span>
-      </div>
-
-      <div class="actions">
-        <button class="ghost" id="toggleJournal" aria-pressed="true" title="Toggle journal pane (J)">Journal</button>
-
-        <div class="menu">
-          <button class="ghost" id="toggleSounds" aria-expanded="false" aria-controls="soundsPanel" title="Ambient sounds (S)">Sounds ▾</button>
-          <section class="popover sounds" id="soundsPanel" hidden>
-            <div class="popoverHead">
-              <strong>Ambient sounds</strong>
-              <button class="ghost icon closePopover" aria-label="Close">✕</button>
-            </div>
-            <div class="sound" data-sound="rain"><label><span>Rain</span><input type="range" min="0" max="100" value="0" /></label></div>
-            <div class="sound" data-sound="brown"><label><span>Brown noise</span><input type="range" min="0" max="100" value="0" /></label></div>
-            <div class="sound" data-sound="wind"><label><span>Wind</span><input type="range" min="0" max="100" value="0" /></label></div>
-            <div class="sound" data-sound="cafe"><label><span>Café murmur</span><input type="range" min="0" max="100" value="0" /></label></div>
-            <div class="sound" data-sound="fire"><label><span>Fireplace</span><input type="range" min="0" max="100" value="0" /></label></div>
-            <button class="ghost small" id="muteAll">Mute all</button>
-            <hr />
-            <div class="lofiRow">
-              <label>Lo-fi stream
-                <input type="url" id="lofiUrl" placeholder="YouTube link" />
-              </label>
-              <button class="ghost small" id="lofiGirl" title="Use the Lofi Girl 24/7 stream">Lofi Girl</button>
-              <button class="primary small" id="lofiToggle">Play</button>
-            </div>
-            <p class="hint">Sounds are generated in your browser. Nothing is downloaded, nothing is tracked.</p>
-          </section>
-        </div>
-
-        <div class="menu">
-          <button class="ghost" id="toggleSettings" aria-expanded="false" aria-controls="settingsPanel" title="Settings">⚙</button>
-          <section class="popover settings" id="settingsPanel" hidden>
-            <div class="popoverHead">
-              <strong>Settings</strong>
-              <button class="ghost icon closePopover" aria-label="Close">✕</button>
-            </div>
-            <label class="field">Theme
-              <select id="theme">
-                <option value="system">System</option>
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
-              </select>
-            </label>
-            <label class="field">Editor font
-              <select id="font">
-                <option value="sans">Sans</option>
-                <option value="serif">Serif</option>
-                <option value="mono">Mono</option>
-              </select>
-            </label>
-            <label class="field">Focus length
-              <select id="focusLength">
-                <option value="15">15 min</option>
-                <option value="25" selected>25 min</option>
-                <option value="45">45 min</option>
-                <option value="50">50 min</option>
-              </select>
-            </label>
-            <p class="hint">Shortcuts: Space start/pause · J journal · S sounds · Z zen · B park a distraction · Esc leave zen</p>
-          </section>
-        </div>
-
-        <button class="ghost" id="focusMode" title="Zen mode: hide everything but the editor (Z)">Zen</button>
-      </div>
+    <header class="nav">
+      <a class="brand" href="./"><span class="logo" aria-hidden="true"></span>Focus Space</a>
+      <nav>
+        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
+        <a class="button" href="./app/">Open the app</a>
+      </nav>
     </header>
 
-    <main class="workspace" id="workspace">
-      <section class="pane" id="writePane">
-        <div class="paneHead">
-          <input class="title" id="docTitle" value="Untitled document" aria-label="Document title" />
-          <div class="paneTools">
-            <span class="count" id="wordCount">0 words</span>
-            <div class="menu">
-              <button class="ghost small" id="toggleExport" aria-expanded="false" aria-controls="exportPanel" title="Download the document">↓ Export ▾</button>
-              <section class="popover export" id="exportPanel" hidden>
-                <div class="popoverHead">
-                  <strong>Export</strong>
-                  <button class="ghost icon closePopover" aria-label="Close">✕</button>
-                </div>
-                <button class="exportOption" data-format="pdf"><b>PDF</b><span>Opens the print dialog, choose "Save as PDF"</span></button>
-                <button class="exportOption" data-format="docx"><b>Word (.docx)</b><span>Headings, lists, checklists and links kept</span></button>
-                <button class="exportOption" data-format="md"><b>Markdown (.md)</b><span>For Notion, Obsidian, GitHub…</span></button>
-                <button class="exportOption" data-format="txt"><b>Plain text (.txt)</b><span>Just the words</span></button>
-              </section>
-            </div>
-          </div>
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Free · No account · Works offline</p>
+        <h1>Write without the noise.</h1>
+        <p class="lead">
+          A split-screen workspace for ADHD brains: your text on the left, a journal on the right to park every distracting
+          thought, a focus timer and ambient sounds. Nothing to sign up for, nothing leaves your device.
+        </p>
+        <div class="cta">
+          <a class="button primary" href="./app/">Start writing, it's free</a>
+          <span class="hint">Opens in your browser. Install it as an app if you like.</span>
         </div>
-        <div class="toolbar" id="toolbar" role="toolbar" aria-label="Formatting"></div>
-        <div class="editor" id="editor"></div>
+        <figure class="shot">
+          <picture>
+            <source srcset="./screens/desktop-dark.png" media="(prefers-color-scheme: dark)" />
+            <img src="./screens/desktop-light.png" width="1280" height="800" alt="Focus Space: rich text editor on the left, journal on the right, timer in the top bar" />
+          </picture>
+        </figure>
       </section>
 
-      <div class="divider" id="divider" role="separator" aria-orientation="vertical" tabindex="0"></div>
+      <section class="features" id="how">
+        <h2>Built around one idea: a thought that interrupts you should take two seconds to put away.</h2>
+        <div class="grid">
+          <article>
+            <h3>Park a distraction</h3>
+            <p>Press <kbd>B</kbd> and a timestamped line lands in the journal. Your idea is safe, your text is still there, you keep going.</p>
+          </article>
+          <article>
+            <h3>Focus timer</h3>
+            <p>15 to 50 minute focus blocks with short and long breaks, a gentle chime and a count of today's sessions.</p>
+          </article>
+          <article>
+            <h3>Ambient sounds</h3>
+            <p>Rain, brown noise, wind, café, fireplace, generated in your browser. Mix them, or play the Lofi Girl stream.</p>
+          </article>
+          <article>
+            <h3>A real editor</h3>
+            <p>Headings, lists, checklists, highlights, links and code. Export to PDF, Word, Markdown or plain text.</p>
+          </article>
+          <article>
+            <h3>Zen mode</h3>
+            <p>Press <kbd>Z</kbd> and everything disappears except your words. Light, dark or system theme.</p>
+          </article>
+          <article>
+            <h3>Yours, offline</h3>
+            <p>Everything is saved on your device. No account, no tracking of what you write, no server to go down.</p>
+          </article>
+        </div>
+      </section>
 
-      <aside class="pane" id="journalPane">
-        <div class="paneHead">
-          <span class="title static">Journal</span>
-          <div class="paneTools">
-            <span class="count" id="journalDate"></span>
-            <button class="ghost small" id="brainDump" title="Add a timestamped line to park a distracting thought (B)">+ Park a distraction</button>
-          </div>
-        </div>
-        <textarea id="journal" placeholder="Notes, ideas and things to do later. Something pops into your head while you write? Park it here and get back to it after."></textarea>
-        <div class="intent">
-          <label>Today I will finish
-            <input id="intent" placeholder="one concrete thing" />
-          </label>
-        </div>
-      </aside>
+      <section class="duo">
+        <figure>
+          <img src="./screens/mobile.png" width="390" height="844" loading="lazy" alt="Focus Space on a phone, with Write and Journal tabs" />
+          <figcaption>On your phone: Write and Journal tabs, install it to your home screen.</figcaption>
+        </figure>
+        <figure>
+          <img src="./screens/sounds.png" width="1280" height="800" loading="lazy" alt="The ambient sounds panel with five sliders and the lo-fi stream" />
+          <figcaption>Five sounds, five sliders, and a lo-fi stream when you want music.</figcaption>
+        </figure>
+      </section>
+
+      <section class="faq" id="faq">
+        <h2>Questions</h2>
+        <details>
+          <summary>Is it really free?</summary>
+          <p>Yes. The editor, the journal, the timer, the sounds and the exports are free. No trial, no card.</p>
+        </details>
+        <details>
+          <summary>Where is my text stored?</summary>
+          <p>In your browser's local storage, on your device only. Clearing your browser data erases it, so export what matters.</p>
+        </details>
+        <details>
+          <summary>Do I need an account?</summary>
+          <p>No. Open the page and write.</p>
+        </details>
+        <details>
+          <summary>Does it work offline?</summary>
+          <p>Yes. After the first visit the app is cached and works without a connection. Only the lo-fi stream needs internet.</p>
+        </details>
+        <details>
+          <summary>Who makes it?</summary>
+          <p>Quentin Mayer, a freelance developer who needed a quieter place to write. <a href="https://mayerquentin.com">mayerquentin.com</a></p>
+        </details>
+      </section>
+
+      <section class="final">
+        <h2>Ready when you are.</h2>
+        <a class="button primary" href="./app/">Open Focus Space</a>
+      </section>
     </main>
 
-    <div class="lofi" id="lofiFrame" hidden></div>
-
-    <nav class="tabbar" aria-label="Panes">
-      <button class="tab" data-pane="write" aria-pressed="true">Write</button>
-      <button class="tab" data-pane="journal">Journal</button>
-    </nav>
-
-    <footer class="statusbar">
-      <span id="saveState">Saved locally</span>
-      <span class="shortcuts">Space: start/pause · J: journal · S: sounds · Z: zen · B: park a distraction</span>
+    <footer>
+      <span>© 2026 Quentin Mayer</span>
+      <a href="./app/">App</a>
+      <a href="https://github.com/qntmyr/focus-space">Source</a>
     </footer>
 
-    <script type="module" src="./src/main.ts"></script>
+    <script type="module" src="./src/analytics.ts"></script>
   </body>
 </html>
