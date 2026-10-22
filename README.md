@@ -12,7 +12,7 @@ A calm split-screen workspace for ADHD brains: write on the left, park distracti
 
 ## Deploy
 
-Hosted on Cloudflare Pages, connected to this repository: every push to `main` deploys production, every pull request gets a preview URL. Settings: build command `npm run build`, output directory `dist`. `public/_headers` keeps the service worker fresh and caches hashed assets for a year.
+Hosted on Vercel, connected to this repository: every push to `main` deploys production, every pull request gets a preview URL. Vercel detects Vite (build `npm run build`, output `dist`). `vercel.json` keeps the service worker and manifest fresh and caches hashed assets for a year. The custom domain is a subdomain of mayerquentin.com (DNS at OVH, CNAME to `cname.vercel-dns.com`).
 
 ## Develop
 
@@ -27,4 +27,4 @@ npm run dev
 npm run build   # output in dist/
 ```
 
-The build is a static site: deploy `dist/` to Cloudflare Pages, GitHub Pages, Netlify or any static host.
+The build is a static site: deploy `dist/` to Vercel, Netlify, GitHub Pages or any static host.
