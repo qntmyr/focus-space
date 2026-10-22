@@ -49,12 +49,13 @@
             <button class="ghost small" id="muteAll">Mute all</button>
             <hr />
             <div class="lofiRow">
-              <label>Lo-fi stream
-                <input type="url" id="lofiUrl" placeholder="YouTube link" />
+              <label>Lo-fi radio (audio only)
+                <select id="lofiStation"></select>
               </label>
-              <button class="ghost small" id="lofiGirl" title="Use the Lofi Girl 24/7 stream">Lofi Girl</button>
               <button class="primary small" id="lofiToggle">Play</button>
+              <input type="url" id="lofiUrl" placeholder="…or paste any YouTube link" aria-label="Custom YouTube link" />
             </div>
+            <p class="hint lofiStatus" id="lofiStatus" aria-live="polite"></p>
             <p class="hint">Sounds are generated in your browser. Nothing is downloaded, nothing is tracked.</p>
           </section>
         </div>
@@ -140,7 +141,7 @@
       </aside>
     </main>
 
-    <div class="lofi" id="lofiFrame" hidden></div>
+    <div class="lofi" id="lofiFrame" aria-hidden="true"></div>
 
     <nav class="tabbar" aria-label="Panes">
       <button class="tab" data-pane="write" aria-pressed="true">Write</button>

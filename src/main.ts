@@ -1,5 +1,6 @@
 import "./analytics";
-import { load, save, LOFI_GIRL, type State } from "./store";
+import { load, save, type State } from "./store";
+import { LofiPlayer, STATIONS, youtubeId } from "./lofi";
 import { Pomodoro, DURATIONS, format, type Mode } from "./timer";
 import { Soundscape } from "./sounds";
 import { createEditor } from "./editor";
@@ -288,36 +289,59 @@ if (Object.values(state.sounds).some((l) => l > 0)) {
   window.addEventListener("keydown", restoreSounds);
 }
 
-lofiUrl.value = state.lofiUrl;
-lofiUrl.addEventListener("change", () => {
-  state.lofiUrl = lofiUrl.value.trim();
-  persist();
+const lofiStation = $<HTMLSelectElement>("#lofiStation");
+const lofiStatus = $<HTMLParagraphElement>("#lofiStatus");
+const lofi = new LofiPlayer(lofiFrame, (text, playing) => {
+  lofiStatus.textContent = text;
+  lofiToggle.textContent = playing ? "Stop" : "Play";
 });
-$("#lofiGirl").addEventListener("click", () => {
-  lofiUrl.value = state.lofiUrl = LOFI_GIRL;
-  persist();
-  if (lofiFrame.hidden) lofiToggle.click();
-});
-function youtubeId(url: string): string | null {
-  const m = url.match(/(?:v=|youtu\.be\/|live\/|embed\/)([\w-]{11})/);
-  return m ? m[1] : null;
+const CUSTOM = "custom";
+for (const st of STATIONS) lofiStation.append(new Option(st.name, st.url));
+lofiStation.append(new Option("Custom link", CUSTOM));
+function syncLofiInputs(): void {
+  const preset = STATIONS.find((st) => youtubeId(st.url) === youtubeId(state.lofiUrl));
+  lofiStation.value = preset ? preset.url : CUSTOM;
+  lofiUrl.value = preset ? "" : state.lofiUrl;
+  lofiUrl.hidden = !!preset;
 }
-lofiToggle.addEventListener("click", () => {
-  if (!lofiFrame.hidden) {
-    lofiFrame.innerHTML = "";
-    lofiFrame.hidden = true;
-    lofiToggle.textContent = "Play";
+syncLofiInputs();
+lofiStation.addEventListener("change", () => {
+  if (lofiStation.value === CUSTOM) {
+    lofiUrl.hidden = false;
+    lofiUrl.focus();
     return;
   }
-  const id = youtubeId(lofiUrl.value);
-  if (!id) {
-    lofiUrl.focus();
+  state.lofiUrl = lofiStation.value;
+  persist();
+  lofiUrl.hidden = true;
+  if (lofi.playing || lofiToggle.textContent === "Stop") void lofi.play(state.lofiUrl);
+});
+lofiUrl.addEventListener("change", () => {
+  if (!youtubeId(lofiUrl.value)) {
+    lofiUrl.setCustomValidity("Paste a YouTube video or live link");
     lofiUrl.reportValidity();
     return;
   }
-  lofiFrame.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1" allow="autoplay; encrypted-media" title="Lo-fi stream"></iframe>`;
-  lofiFrame.hidden = false;
-  lofiToggle.textContent = "Stop";
+  lofiUrl.setCustomValidity("");
+  state.lofiUrl = lofiUrl.value.trim();
+  persist();
+});
+lofiToggle.addEventListener("click", () => {
+  if (lofiToggle.textContent === "Stop") {
+    lofi.stop();
+    return;
+  }
+  const url = lofiStation.value === CUSTOM ? lofiUrl.value : lofiStation.value;
+  if (!youtubeId(url)) {
+    lofiUrl.hidden = false;
+    lofiUrl.focus();
+    lofiUrl.setCustomValidity("Paste a YouTube video or live link");
+    lofiUrl.reportValidity();
+    return;
+  }
+  state.lofiUrl = url.trim();
+  persist();
+  void lofi.play(state.lofiUrl);
 });
 
 /* ---------- shortcuts ---------- */
