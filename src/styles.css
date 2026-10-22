@@ -33,9 +33,11 @@
 
 html { height: 100%; }
 
+/* The page itself never scrolls: each pane (editor, journal) scrolls on its own. */
 body {
   margin: 0;
-  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
@@ -143,7 +145,9 @@ select {
 .popover hr { border: 0; border-top: 1px solid var(--line); margin: 0; }
 .sound label { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
 .sound input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
-.lofiRow { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: end; }
+.lofiRow { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: end; }
+.lofiRow input[type="url"] { grid-column: 1 / -1; }
+.lofiStatus:empty { display: none; }
 .lofiRow label { display: grid; gap: 6px; font-size: 13px; color: var(--muted); min-width: 0; }
 .lofiRow input[type="url"] {
   padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); min-width: 0; width: 100%;
@@ -183,6 +187,7 @@ select {
   border-radius: var(--radius);
   min-height: 0;
   min-width: 0;
+  overflow: hidden;
 }
 .paneHead {
   display: flex;
@@ -289,8 +294,9 @@ textarea:focus { outline: none; }
 .divider::after { content: ""; position: absolute; top: 40%; bottom: 40%; left: 4px; width: 2px; border-radius: 2px; background: var(--line); }
 .divider:hover::after, .divider:focus-visible::after { background: var(--accent); }
 
-.lofi { padding: 0 16px 12px; }
-.lofi iframe { width: 100%; height: 90px; border: 0; border-radius: 10px; }
+/* Audio only: the YouTube player stays in the page but out of sight. */
+.lofi { position: fixed; width: 1px; height: 1px; left: -10px; bottom: -10px; overflow: hidden; opacity: 0.01; pointer-events: none; }
+.lofi iframe { width: 1px; height: 1px; border: 0; }
 
 .tabbar { display: none; }
 
@@ -358,8 +364,6 @@ body.flash { animation: flash 0.6s ease 3; }
   .tab[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
   .statusbar { display: none; }
-  .lofi { padding: 0 10px 8px; }
-  .lofi iframe { height: 80px; }
 
   body.zen .topbar { grid-template-columns: 1fr; }
   body.zen .timer { justify-content: center; }
@@ -374,6 +378,7 @@ body.flash { animation: flash 0.6s ease 3; }
   body { display: block; background: #fff; color: #111; transition: none; }
   .topbar, .paneHead, .toolbar, #journalPane, .divider, .lofi, .tabbar, .statusbar, .popover { display: none !important; }
   .workspace { display: block; padding: 0; }
+  body { height: auto; overflow: visible; }
   .pane { border: 0; overflow: visible; }
   .editor { overflow: visible; }
   .ProseMirror { padding: 0; max-width: none; font-size: 12pt; }

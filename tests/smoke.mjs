@@ -9,9 +9,11 @@ const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 const errors = [];
 page.on('pageerror', (e) => errors.push(e.message));
 page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
+page.on('requestfailed', (r) => errors.push(`request failed: ${r.url()}`));
+page.on('response', (r) => r.status() >= 400 && errors.push(`HTTP ${r.status()} ${r.url()}`));
 
 try {
-  await page.goto('http://localhost:4173/');
+  await page.goto('http://localhost:4173/app/');
   await page.waitForSelector('.ProseMirror', { timeout: 10000 });
   await page.click('.ProseMirror');
   await page.keyboard.type('Smoke test');

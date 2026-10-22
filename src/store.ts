@@ -17,7 +17,8 @@ export interface State {
   sessions: number;
 }
 
-export const LOFI_GIRL = "https://www.youtube.com/watch?v=jfKfPfyJRdk";
+import { STATIONS } from "./lofi";
+
 
 export const defaults: State = {
   title: "Untitled document",
@@ -31,7 +32,7 @@ export const defaults: State = {
   mobilePane: "write",
   split: 0.66,
   sounds: {},
-  lofiUrl: LOFI_GIRL,
+  lofiUrl: STATIONS[0].url,
   sessionsDate: "",
   sessions: 0,
 };

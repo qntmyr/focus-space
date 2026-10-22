@@ -1,8 +1,8 @@
 // Offline-first cache: the app shell is served from cache, refreshed in the background.
-const CACHE = "focus-space-v1";
+const CACHE = "focus-space-v2";
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(["./", "./index.html", "./manifest.webmanifest", "./icon.svg"])));
+  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(["./", "./app/", "./manifest.webmanifest", "./icon.svg"])));
   self.skipWaiting();
 });
 
