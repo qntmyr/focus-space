@@ -33,9 +33,11 @@
 
 html { height: 100%; }
 
+/* The page itself never scrolls: each pane (editor, journal) scrolls on its own. */
 body {
   margin: 0;
-  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
@@ -183,6 +185,7 @@ select {
   border-radius: var(--radius);
   min-height: 0;
   min-width: 0;
+  overflow: hidden;
 }
 .paneHead {
   display: flex;
@@ -374,6 +377,7 @@ body.flash { animation: flash 0.6s ease 3; }
   body { display: block; background: #fff; color: #111; transition: none; }
   .topbar, .paneHead, .toolbar, #journalPane, .divider, .lofi, .tabbar, .statusbar, .popover { display: none !important; }
   .workspace { display: block; padding: 0; }
+  body { height: auto; overflow: visible; }
   .pane { border: 0; overflow: visible; }
   .editor { overflow: visible; }
   .ProseMirror { padding: 0; max-width: none; font-size: 12pt; }
